@@ -1,50 +1,28 @@
 <template>
   <div>
-    <ul>
+    <transition-group name="test" tag="ul">
       <li
-        v-for="(todoItem, index) in todoItems"
+        v-for="(todoItem, index) in propsdata"
         v-bind:key="todoItem.item"
         v-bind:class="{ textCompleted: todoItem.completed }"
       >
         <button v-on:click="toggleTodo(todoItem, index)">체크</button>
         {{ todoItem.item }}
-        <button v-on:click="removeTodo(todoItem)">삭제</button>
+        <button v-on:click="removeTodo(todoItem, index)">삭제</button>
       </li>
-    </ul>
+    </transition-group>
   </div>
 </template>
 
 <script>
 export default {
-  data() {
-    return {
-      todoItems: [],
-      checked: false,
-    };
-  },
-  created() {
-    console.log(this.todoItems);
-    if (localStorage.length > 0) {
-      for (let i = 0; i < localStorage.length; i++) {
-        if (localStorage.key(i) !== 'loglevel:webpack-dev-server')
-          this.todoItems.push(
-            JSON.parse(localStorage.getItem(localStorage.key(i))),
-          );
-      }
-    }
-  },
+  props: ['propsdata'],
   methods: {
     removeTodo(todoItem, index) {
-      console.log(todoItem);
-      localStorage.removeItem(todoItem.item);
-      this.todoItems.splice(index, 1);
+      this.$emit('removeTodoItem', todoItem, index);
     },
-    toggleTodo(todoItem) {
-      console.log(todoItem);
-      todoItem.completed = !todoItem.completed;
-      // 로컬스토리지의 데이터를 갱신(completed의 변화)
-      localStorage.removeItem(todoItem.item);
-      localStorage.setItem(todoItem.item, JSON.stringify(todoItem));
+    toggleTodo(todoItem, index) {
+      this.$emit('toggleTodoItem', todoItem, index);
     },
   },
 };
@@ -60,5 +38,15 @@ li {
 .textCompleted {
   text-decoration: line-through;
   color: #b3adad;
+}
+
+.test-enter-active,
+.test-leave-active {
+  transition: all 1s;
+}
+.test-enter,
+.test-leave-to {
+  opacity: 0;
+  transform: translateY(10px);
 }
 </style>
