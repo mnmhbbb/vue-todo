@@ -1,13 +1,13 @@
 <template>
   <div id="app">
-    <todo-header></todo-header>
-    <todo-input v-on:addTodoItem="addItem"></todo-input>
-    <todo-list
+    <TodoHeader></TodoHeader>
+    <TodoInput v-on:addTodoItem="addItem"></TodoInput>
+    <TodoList
       v-bind:propsdata="todoItems"
       v-on:removeTodoItem="removeItem"
       v-on:toggleTodoItem="toggleTodo"
-    ></todo-list>
-    <todo-footer v-on:clearAll="clearAllTodo"></todo-footer>
+    ></TodoList>
+    <TodoFooter v-on:clearAll="clearAllTodo"></TodoFooter>
   </div>
 </template>
 
